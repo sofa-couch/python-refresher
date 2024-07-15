@@ -4,14 +4,16 @@
 
 # p1
 def calculate_buoyancy(V, density_fluid):
-    if (V != int(V) & V != float(V)) | (
-        density_fluid != int(density_fluid) & density_fluid != float(density_fluid)
-    ):
-        return "Error in calculate_buoyancy: non-integer or non-float value detected in V or density_fluid"
+    if V != int(V) | density_fluid != int(density_fluid):
+        raise ValueError(
+            "Error in calculate_buoyancy: non-integer or non-float value detected in V or density_fluid"
+        )
     elif V < 0:
-        return "Error in calculate_buoyancy: negative V value detected"
+        raise ValueError("Error in calculate_buoyancy: negative V value detected")
     elif density_fluid < 0:
-        return "Error in calculate_buoyancy: negative density_fluid value detected."
+        raise ValueError(
+            "Error in calculate_buoyancy: negative density_fluid value detected."
+        )
     else:
         f = V * density_fluid * 9.81
         return f
@@ -20,11 +22,13 @@ def calculate_buoyancy(V, density_fluid):
 # p2
 def will_it_float(V, mass):
     if (V != int(V) & V != float(V)) | (mass != int(mass) & mass != float(mass)):
-        return "Error in will_it_float: non-integer or non-float value detected in V or mass"
+        raise ValueError(
+            "Error in will_it_float: non-integer or non-float value detected in V or mass"
+        )
     elif V < 0:
-        return "Error in will_it_float: negative V value detected"
+        raise ValueError("Error in will_it_float: negative V value detected")
     elif mass < 0:
-        return "Error in will_it_float: negative mass value detected"
+        raise ValueError("Error in will_it_float: negative mass value detected")
     else:
         density = mass / V
         if density > 997:
@@ -34,10 +38,10 @@ def will_it_float(V, mass):
 
 
 # p3
-def calculate_pressure(depth):
+def calculate_pressure(depth, atmos_p=101325):
     if depth != int(depth) & depth != float(depth):
-        return "Error in calculate_pressure: non-integer or non-float value detected in depth"
-    pressure = depth * 9.81 * 1000
+        raise "Error in calculate_pressure: non-integer or non-float value detected in depth"
+    pressure = depth * 9.81 * 1000 + 101325
     return pressure
 
 
@@ -75,7 +79,9 @@ def calculate_AUV_acceleration(
     elif F_angle > 30 or F_angle < -30:
         return "Error in calculate_AUV_acceleration: thruster angle value out of range"
     else:
-        acceleration = F_magnitude / mass
+        F_vertical = F_magnitude * math.sin(F_direction)
+        F_horizontal = F_magnitude * math.cos(F_direction)
+        acceleration = ([F_horizontal, F_vertical]) / mass
     return acceleration
 
 
