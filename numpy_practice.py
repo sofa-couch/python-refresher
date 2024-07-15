@@ -1,5 +1,4 @@
 import numpy as np
-import math
 
 # p1
 a = np.array([1, 2, 3])
